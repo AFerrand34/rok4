@@ -141,7 +141,7 @@ use Data::Dumper;
 use COMMON::Level;
 use COMMON::NoData;
 use COMMON::PyrImageSpec;
-use COMMON::ProxyStorage;
+use COMMON::ProxyStorageWithCephBinding;
 
 require Exporter;
 use AutoLoader qw(AUTOLOAD);
@@ -859,7 +859,7 @@ sub backupDescriptor {
         INFO("On ne sauvegarde pas le descripteur de pyramide en mode fichier car des chemins sont en relatif et n'ont pas de sens si le fichier est ailleurs");
     } else {
         my $backupDescFile = sprintf "%s/%s.pyr", $this->getDataRoot(), $this->getName();
-        COMMON::ProxyStorage::copy("FILE", $descFile, $this->{storage_type}, $backupDescFile);
+        COMMON::ProxyStorageWithCephBinding::copy("FILE", $descFile, $this->{storage_type}, $backupDescFile);
     }
 }
 
@@ -883,7 +883,7 @@ sub backupList {
         $backupList = sprintf "%s/%s.list", $this->getDataRoot(), $this->getName();
     }
 
-    COMMON::ProxyStorage::copy("FILE", $listFile, $this->{storage_type}, $backupList);
+    COMMON::ProxyStorageWithCephBinding::copy("FILE", $listFile, $this->{storage_type}, $backupList);
 }
 
 

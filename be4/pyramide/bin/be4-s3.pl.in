@@ -328,7 +328,7 @@ sub config {
 
     # Environment variables
 
-    if (! COMMON::ProxyStorage::checkEnvironmentVariables("S3")) {
+    if (! COMMON::ProxyStorageWithCephBinding::checkEnvironmentVariables("S3")) {
         ERROR("Environment variable is missing for a S3 storage");
         return FALSE;
     }
@@ -482,13 +482,13 @@ sub writeListAndReferences {
         }
 
         if ($updateMode eq "slink") {
-            if (! defined COMMON::ProxyStorage::symLink("S3", $ancestorSlab, "S3", $newSlab)) {
+            if (! defined COMMON::ProxyStorageWithCephBinding::symLink("S3", $ancestorSlab, "S3", $newSlab)) {
                 ERROR("The ancestor slab '$ancestorSlab' cannot be referenced by sym link in the new pyramid");
                 return FALSE;
             }
         }
         elsif ($updateMode eq "copy") {
-            if (! COMMON::ProxyStorage::copy("S3", $ancestorSlab, "S3", $newSlab)) {
+            if (! COMMON::ProxyStorageWithCephBinding::copy("S3", $ancestorSlab, "S3", $newSlab)) {
                 ERROR("The ancestor slab '$ancestorSlab' cannot be referenced by copy in the new pyramid");
                 return FALSE;
             }

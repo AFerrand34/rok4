@@ -65,7 +65,7 @@ use lib "$Bin/../lib/perl5";
 
 # My module
 use COMMON::Pyramid;
-use COMMON::ProxyStorage;
+use COMMON::ProxyStorageWithCephBinding;
 
 ################################################################################
 # Constantes
@@ -315,7 +315,7 @@ sub doIt {
         # On va donc reconstruire le nom de la dalle dans la pyramide que l'on veut supprimer, en remettant son nom
 
         my $slab = "${dataTray}/${pyramidName}_${dataType}_${level}_${col}_${row}";
-        if (! COMMON::ProxyStorage::remove($storageType, $slab)) {
+        if (! COMMON::ProxyStorageWithCephBinding::remove($storageType, $slab)) {
             WARN("Impossible de supprimer la dalle $storageType $slab");
             $issue = TRUE;
         }
@@ -326,14 +326,14 @@ sub doIt {
     if ($options{full} && ! $issue) {
         # On supprime maintenant le descripteur et la liste
         INFO("Suppression du descripteur de pyramide ".$options{pyr});
-        if (! COMMON::ProxyStorage::remove("FILE", $options{pyr})) {
+        if (! COMMON::ProxyStorageWithCephBinding::remove("FILE", $options{pyr})) {
             ERROR("Impossible de supprimer le descripteur de pyramide ".$options{pyr});
             return FALSE;
         }
 
         if (-f $listFile) {
             INFO("Suppression de la liste $listFile");
-            if (! COMMON::ProxyStorage::remove("FILE", $listFile)) {
+            if (! COMMON::ProxyStorageWithCephBinding::remove("FILE", $listFile)) {
                 ERROR("Impossible de supprimer la liste $listFile");
                 return FALSE;
             }

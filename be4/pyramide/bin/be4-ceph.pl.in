@@ -411,7 +411,7 @@ sub config {
 
     # Environment variables
 
-    if (! COMMON::ProxyStorage::checkEnvironmentVariables("CEPH")) {
+    if (! COMMON::ProxyStorageWithCephBinding::checkEnvironmentVariables("CEPH")) {
         ERROR("Environment variable is missing for a Ceph storage");
         return FALSE;
     }
@@ -564,13 +564,13 @@ sub writeListAndReferences {
         }
 
         if ($updateMode eq "slink") {
-            if (! defined COMMON::ProxyStorage::symLink("CEPH", $ancestorSlab, "CEPH", $newSlab)) {
+            if (! defined COMMON::ProxyStorageWithCephBinding::symLink("CEPH", $ancestorSlab, "CEPH", $newSlab)) {
                 ERROR("The ancestor slab '$ancestorSlab' cannot be referenced by sym link in the new pyramid");
                 return FALSE;
             }
         }
         elsif ($updateMode eq "copy") {
-            if (! COMMON::ProxyStorage::copy("CEPH", $ancestorSlab, "CEPH", $newSlab)) {
+            if (! COMMON::ProxyStorageWithCephBinding::copy("CEPH", $ancestorSlab, "CEPH", $newSlab)) {
                 ERROR("The ancestor slab '$ancestorSlab' cannot be referenced by copy in the new pyramid");
                 return FALSE;
             }

@@ -224,7 +224,7 @@ sub _load {
 
     my $imageSlab = $mainLevel->getSlabPath("IMAGE", $this->{col}, $this->{row}, TRUE);
 
-    if ( COMMON::ProxyStorage::isPresent($params->{sourcePyramids}->[$params->{mainSourceIndice}]->{pyr}->getStorageType(), $imageSlab) ) {
+    if ( COMMON::ProxyStorageWithCephBinding::isPresent($params->{sourcePyramids}->[$params->{mainSourceIndice}]->{pyr}->getStorageType(), $imageSlab) ) {
         # L'image existe, voyons également si elle a un masque associé
         my %sourceSlab = (
             img => $imageSlab,
@@ -234,7 +234,7 @@ sub _load {
         if ($params->{useMasks} && $mainLevel->ownMasks()) {
 
             my $maskSlab = $mainLevel->getSlabPath("MASK", $this->{col}, $this->{row}, TRUE);
-            if ( COMMON::ProxyStorage::isPresent($params->{sourcePyramids}->[$params->{mainSourceIndice}]->{pyr}->getStorageType(), $maskSlab) ) {
+            if ( COMMON::ProxyStorageWithCephBinding::isPresent($params->{sourcePyramids}->[$params->{mainSourceIndice}]->{pyr}->getStorageType(), $maskSlab) ) {
                 $sourceSlab{msk} = $maskSlab;
             }
         }
@@ -260,7 +260,7 @@ sub _load {
 
         my $imageSlab = $sourceLevel->getSlabPath("IMAGE", $this->{col}, $this->{row}, TRUE);
 
-        if ( COMMON::ProxyStorage::isPresent($params->{sourcePyramids}->[$ind]->{pyr}->getStorageType(), $imageSlab) ) {
+        if ( COMMON::ProxyStorageWithCephBinding::isPresent($params->{sourcePyramids}->[$ind]->{pyr}->getStorageType(), $imageSlab) ) {
             # L'image existe, voyons également si elle a un masque associé
             my %sourceSlab = (
                 img => $imageSlab,
@@ -270,7 +270,7 @@ sub _load {
             if ($params->{useMasks} && $sourceLevel->ownMasks()) {
 
                 my $maskSlab = $sourceLevel->getSlabPath("MASK", $this->{col}, $this->{row}, TRUE);
-                if ( COMMON::ProxyStorage::isPresent($params->{sourcePyramids}->[$ind]->{pyr}->getStorageType(), $maskSlab) ) {
+                if ( COMMON::ProxyStorageWithCephBinding::isPresent($params->{sourcePyramids}->[$ind]->{pyr}->getStorageType(), $maskSlab) ) {
                     $sourceSlab{msk} = $maskSlab;
                 }
             }

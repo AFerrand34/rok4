@@ -332,7 +332,7 @@ sub config {
 
     # Environment variables
 
-    if (! COMMON::ProxyStorage::checkEnvironmentVariables("CEPH")) {
+    if (! COMMON::ProxyStorageWithCephBinding::checkEnvironmentVariables("CEPH")) {
         ERROR("Environment variable is missing for a CEPH storage");
         return FALSE;
     }

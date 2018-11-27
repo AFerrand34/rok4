@@ -459,7 +459,7 @@ sub doIt {
                         return FALSE;
                     }
 
-                    if (! COMMON::ProxyStorage::isPresent($srcStorageType, $srcSlabPath)) {
+                    if (! COMMON::ProxyStorageWithCephBinding::isPresent($srcStorageType, $srcSlabPath)) {
                         next;
                     }
 
@@ -468,19 +468,19 @@ sub doIt {
                     my $dstSlabPath = $dstLevel->getSlabPath("IMAGE", $col, $row, TRUE);
 
                     if ($this{params}->{pyramid}->{extract_mode} eq "slink") {
-                        if (! defined COMMON::ProxyStorage::symLink($srcStorageType, $srcSlabPath, $dstStorageType, $dstSlabPath)) {
+                        if (! defined COMMON::ProxyStorageWithCephBinding::symLink($srcStorageType, $srcSlabPath, $dstStorageType, $dstSlabPath)) {
                             ERROR("The ancestor slab '$srcSlabPath' cannot be referenced by sym link in the new pyramid");
                             return FALSE;
                         }
                     }
                     elsif ($this{params}->{pyramid}->{extract_mode} eq "hlink") {
-                        if (! COMMON::ProxyStorage::hardLink($srcStorageType, $srcSlabPath, $dstStorageType, $dstSlabPath)) {
+                        if (! COMMON::ProxyStorageWithCephBinding::hardLink($srcStorageType, $srcSlabPath, $dstStorageType, $dstSlabPath)) {
                             ERROR("The ancestor slab '$srcSlabPath' cannot be referenced by hard link in the new pyramid");
                             return FALSE;
                         }
                     }
                     elsif ($this{params}->{pyramid}->{extract_mode} eq "copy") {
-                        if (! COMMON::ProxyStorage::copy($srcStorageType, $srcSlabPath, $dstStorageType, $dstSlabPath)) {
+                        if (! COMMON::ProxyStorageWithCephBinding::copy($srcStorageType, $srcSlabPath, $dstStorageType, $dstSlabPath)) {
                             ERROR("The ancestor slab '$srcSlabPath' cannot be referenced by copy in the new pyramid");
                             return FALSE;
                         }

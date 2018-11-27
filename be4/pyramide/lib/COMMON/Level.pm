@@ -207,7 +207,7 @@ sub new {
     elsif ( defined $this->{bucket_name} ) {
         $this->{type} = "S3";
 
-        if (! COMMON::ProxyStorage::checkEnvironmentVariables("S3")) {
+        if (! COMMON::ProxyStorageWithCephBinding::checkEnvironmentVariables("S3")) {
             ERROR("Environment variable is missing for a S3 storage");
             return FALSE;
         }
@@ -215,7 +215,7 @@ sub new {
     elsif ( defined $this->{pool_name} ) {
         $this->{type} = "CEPH";
 
-        if (! COMMON::ProxyStorage::checkEnvironmentVariables("CEPH")) {
+        if (! COMMON::ProxyStorageWithCephBinding::checkEnvironmentVariables("CEPH")) {
             ERROR("Environment variable is missing for a CEPH storage");
             return FALSE;
         }
@@ -223,7 +223,7 @@ sub new {
     elsif ( defined $this->{container_name} ) {
         $this->{type} = "SWIFT";
 
-        if (! COMMON::ProxyStorage::checkEnvironmentVariables("SWIFT")) {
+        if (! COMMON::ProxyStorageWithCephBinding::checkEnvironmentVariables("SWIFT")) {
             ERROR("Environment variable is missing for a SWIFT storage");
             return FALSE;
         }

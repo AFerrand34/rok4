@@ -44,7 +44,7 @@ Proxy to manipulate different storage types : object or file, we can copy, refer
 
 Using:
     (start code)
-    use COMMON::ProxyStorage;
+    use COMMON::ProxyStorageWithCephBinding;
     (end code)
 =cut
 
@@ -761,7 +761,6 @@ sub isPresent {
         if ($?) {
             return FALSE;
         }
-        DEBUG("The object exists.");
 
         return TRUE;
     }

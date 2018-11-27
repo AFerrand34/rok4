@@ -79,7 +79,7 @@ use Data::Dumper;
 
 use COMMON::Harvesting;
 use COMMON::Node;
-use COMMON::ProxyStorage;
+use COMMON::ProxyStorageWithCephBinding;
 
 require Exporter;
 use AutoLoader qw(AUTOLOAD);
@@ -201,12 +201,12 @@ sub mergeNtiff {
     # correspondant dans la nouvelle pyramide.
     # On fait de même avec le masque de donnée associé, s'il existe.
     my $imgBg = $this->{pyramid}->getSlabPath("IMAGE", $node->getLevel(), $node->getCol(), $node->getRow(), TRUE);
-    if ( COMMON::ProxyStorage::isPresent($node->getStorageType(), $imgBg) ) {
+    if ( COMMON::ProxyStorageWithCephBinding::isPresent($node->getStorageType(), $imgBg) ) {
         $node->addBgImage();
         
         my $maskBg = $this->{pyramid}->getSlabPath("MASK", $node->getLevel(), $node->getCol(), $node->getRow(), TRUE);
         
-        if ( $this->{useMasks} && defined $maskBg && COMMON::ProxyStorage::isPresent($node->getStorageType(), $maskBg) ) {
+        if ( $this->{useMasks} && defined $maskBg && COMMON::ProxyStorageWithCephBinding::isPresent($node->getStorageType(), $maskBg) ) {
             # On a en plus un masque associé à l'image de fond
             $node->addBgMask();
         }
@@ -435,7 +435,7 @@ sub linkSlab {
     my $target = shift;
     my $link = shift;
 
-    my $realTarget = COMMON::ProxyStorage::getRealData($storageType, $target);
+    my $realTarget = COMMON::ProxyStorageWithCephBinding::getRealData($storageType, $target);
     if ( ! defined $realTarget ) {
         ERROR(sprintf "'$target' (to symlink) is not a file/object or a link", );
         return undef;
@@ -1220,12 +1220,12 @@ sub merge4tiff {
     # correspondant dans la nouvelle pyramide.
     # On fait de même avec le masque de donnée associé, s'il existe.
     my $imgBg = $this->{pyramid}->getSlabPath("IMAGE", $node->getLevel(), $node->getCol(), $node->getRow(), TRUE);
-    if ( COMMON::ProxyStorage::isPresent($node->getStorageType(), $imgBg) && ($this->{useMasks} || scalar @childList != 4) ) {
+    if ( COMMON::ProxyStorageWithCephBinding::isPresent($node->getStorageType(), $imgBg) && ($this->{useMasks} || scalar @childList != 4) ) {
         $node->addBgImage();
         
         my $maskBg = $this->{pyramid}->getSlabPath("MASK", $node->getLevel(), $node->getCol(), $node->getRow(), TRUE);
         
-        if ( $this->{useMasks} && defined $maskBg && COMMON::ProxyStorage::isPresent($node->getStorageType(), $maskBg) ) {
+        if ( $this->{useMasks} && defined $maskBg && COMMON::ProxyStorageWithCephBinding::isPresent($node->getStorageType(), $maskBg) ) {
             # On a en plus un masque associé à l'image de fond
             $node->addBgMask();
         }
@@ -1317,12 +1317,12 @@ sub decimateNtiff {
     # correspondant dans la nouvelle pyramide.
     # On fait de même avec le masque de donnée associé, s'il existe.
     my $imgBg = $this->{pyramid}->getSlabPath("IMAGE", $node->getLevel(), $node->getCol(), $node->getRow(), TRUE);
-    if ( COMMON::ProxyStorage::isPresent($node->getStorageType(), $imgBg) ) {
+    if ( COMMON::ProxyStorageWithCephBinding::isPresent($node->getStorageType(), $imgBg) ) {
         $node->addBgImage();
         
         my $maskBg = $this->{pyramid}->getSlabPath("MASK", $node->getLevel(), $node->getCol(), $node->getRow(), TRUE);
         
-        if ( $this->{useMasks} && defined $maskBg && COMMON::ProxyStorage::isPresent($node->getStorageType(), $maskBg) ) {
+        if ( $this->{useMasks} && defined $maskBg && COMMON::ProxyStorageWithCephBinding::isPresent($node->getStorageType(), $maskBg) ) {
             # On a en plus un masque associé à l'image de fond
             $node->addBgMask();
         }

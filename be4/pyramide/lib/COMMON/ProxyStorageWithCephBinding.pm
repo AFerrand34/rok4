@@ -150,7 +150,6 @@ sub checkEnvironmentVariables {
         }
 
         $ROK4_CEPH_CONFFILE = $ENV{ROK4_CEPH_CONFFILE};
-
         $ROK4_CEPH_USERNAME = $ENV{ROK4_CEPH_USERNAME};
         my $un = $ROK4_CEPH_USERNAME;
         $un =~ s/^client\.//;
@@ -160,8 +159,6 @@ sub checkEnvironmentVariables {
         $CLUSTER = Ceph::Rados->new($un);
         $CLUSTER->set_config_file($ROK4_CEPH_CONFFILE);
         $CLUSTER->connect();
-
-        return TRUE;
 
         
     } elsif ($type eq "SWIFT") {
@@ -328,7 +325,9 @@ Return connected io context for the provided pool. Create it if not exists.
 sub getCephPoolContext {
     my $pool = shift;
 
-    $IOS{$pool} = $CLUSTER->io($pool);
+    if (! exists $IOS{$pool}) {
+        $IOS{$pool} = $CLUSTER->io($pool);
+    }
 
     return $IOS{$pool};
 }
@@ -807,37 +806,14 @@ sub isPresent {
         }
         DEBUG("Looking for object '$objectName' in pool '$poolName'.");
 
-        $CLUSTER=undef;
-        $IOS{$poolName}=undef;
-        my $un = $ROK4_CEPH_USERNAME;
-        $un =~ s/^client\.//;
-        $CLUSTER = Ceph::Rados->new($un);
-        $CLUSTER->set_config_file($ROK4_CEPH_CONFFILE);
-        $CLUSTER->connect();
-
         my $io = getCephPoolContext($poolName);
-        if (!defined $io) { 
-            ERROR("CEPH context is undefined");
-            return FALSE;
-        }
-        DEBUG("CEPH context retrieved.");
 
-        my ($len, $mtime);
-        eval { 
-            DEBUG("Calling 'rados_stat($objectName)'");
-            ($len, $mtime) = $io->stat($objectName);
-            DEBUG("(length, mtime) = ($len, $mtime)");
+        eval {
+            my ($len, $mtime) = $io->stat($objectName);
         } or do {
-            ERROR(sprintf "Error : %s", $@);
-            ERROR(sprintf "Error type array %s", Dumper(\%!));            
-            ERROR(sprintf "Error code : %s (raw value : %s)", $?>>8, $?);
-            ERROR(sprintf "Signal : %s", $? & 127);
-            ERROR(sprintf "Is there a core-dump ? %s", $? & 128);
-            ERROR("Error while checking object.");
             return FALSE;
         };
         
-        DEBUG("The object exists.");
         return TRUE;
     }
     elsif ($type eq "S3") {
@@ -950,7 +926,7 @@ sub getRealData {
             my $realTarget = $io->read($objectName);
 
             # Dans le cas d'un objet Ceph lien, on vérifie que la signature existe bien dans le header
-            if (index($realTarget, ROK4_SYMLINK_SIGNATURE) != -1) {
+            if (index($realTarget, ROK4_SYMLINK_SIGNATURE) == -1) {
                 ERROR("CEPH object is not a valid SYMLINK object : $path");
                 return undef;
             }
